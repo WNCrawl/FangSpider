@@ -59,7 +59,7 @@ SCRAPY_PROJECTS_DIR = ''
 SCRAPYD_SERVERS = [
     # 'http://bigdata.robam.com:6800/',
     # 'username:password@localhost:6801#group',
-    ('username', 'password', 'http://bigdata.robam.com', '6801', 'group'),
+    ('', '', 'http://bigdata.robam.com', '6801', 'group'),
 ]
 
 # Set to speed up loading scrapy logs.

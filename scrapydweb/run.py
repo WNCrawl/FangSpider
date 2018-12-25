@@ -197,27 +197,26 @@ def update_app_config(config, args):
     # scrapyd_server would be None if -ss not passed in
     SCRAPYD_SERVERS = args.scrapyd_server or config.get('SCRAPYD_SERVERS', []) or ['127.0.0.1:6800']
     servers = []
-    # for idx, server in enumerate(SCRAPYD_SERVERS):
-    #     if isinstance(server, tuple):
-    #         assert len(server) == 5, ("Scrapyd server should be a tuple with 5 elements, "
-    #                                   "current value: %s" % str(server))
-    #         usr, psw, ip, port, group = server
-    #     else:
-    #         usr, psw, ip, port, group = pattern_scrapyd_server.search(server.strip()).groups()
-    #     ip = ip.strip() if ip and ip.strip() else '127.0.0.1'
-    #     port = port.strip() if port and port.strip() else '6800'
-    #     group = group.strip() if group and group.strip() else ''
-    #     auth = (usr, psw) if usr and psw else None
-    #     servers.append((group, ip, port, auth))
-    #
-    # def key(arg):
-    #     group, ip, port, auth = arg
-    #     parts = ip.split('.')
-    #     parts = [('0' * (3 - len(part)) + part) for part in parts]
-    #     return [group, '.'.join(parts), int(port)]
-    #
-    # servers = sorted(set(servers), key=key)
-    servers = ["http://bigdata.robam.com:6800/"]
+    for idx, server in enumerate(SCRAPYD_SERVERS):
+        if isinstance(server, tuple):
+            assert len(server) == 5, ("Scrapyd server should be a tuple with 5 elements, "
+                                      "current value: %s" % str(server))
+            usr, psw, ip, port, group = server
+        else:
+            usr, psw, ip, port, group = pattern_scrapyd_server.search(server.strip()).groups()
+        ip = ip.strip() if ip and ip.strip() else '127.0.0.1'
+        port = port.strip() if port and port.strip() else '6800'
+        group = group.strip() if group and group.strip() else ''
+        auth = (usr, psw) if usr and psw else None
+        servers.append((group, ip, port, auth))
+
+    def key(arg):
+        group, ip, port, auth = arg
+        parts = ip.split('.')
+        parts = [('0' * (3 - len(part)) + part) for part in parts]
+        return [group, '.'.join(parts), int(port)]
+
+    servers = sorted(set(servers), key=key)
     check_scrapyd_connectivity(servers)
 
     config['SCRAPYD_SERVERS'] = ['%s:%s' % (ip, port) for group, ip, port, auth in servers]
