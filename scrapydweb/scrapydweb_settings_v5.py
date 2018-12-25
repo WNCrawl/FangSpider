@@ -57,9 +57,9 @@ SCRAPY_PROJECTS_DIR = ''
 #   - it's recommended to pass in a tuple with 5 elements
 #   - e.g., ('', '', '127.0.0.1', '', '') or ('username', 'password', '192.168.123.123', '6801', 'group')
 SCRAPYD_SERVERS = [
-    'http://bigdata.robam.com:6800/',
+    # 'http://bigdata.robam.com:6800/',
     # 'username:password@localhost:6801#group',
-    ('username', 'password', 'localhost', '6801', 'group'),
+    ('username', 'password', 'http://bigdata.robam.com', '6801', 'group'),
 ]
 
 # Set to speed up loading scrapy logs.
